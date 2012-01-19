@@ -1,0 +1,26 @@
+Changelog for eventsCalendar2.
+
+eventsCalendar2 2.2.0 rc1
+==============
+- Added parameter events. Json string with events:
+Example: 
+[[!eventsCalendar?
+    &events=`
+    [
+	{
+	    "id": "1"
+	    ,"date": "2012-01-01 00:00:00"
+	    ,"pagetitle": "Test page"
+	},
+	{
+	    "id": "2"
+	    ,"date": "2012-01-02 12:05:00"
+	    ,"pagetitle": "Test page 2"
+	}
+    ]
+    `
+]]
+
+- Native MODX Revolution internalization, eg Lexicons. Russian and English in package.
+- Non ajax navigation for crawlers and non-js sites.
+- Code review
