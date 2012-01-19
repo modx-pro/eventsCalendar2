@@ -6,8 +6,13 @@
  */
 $c['id'] = !empty($id) ? $id : $modx->resourceIdentifier;
 
-$c['month'] = !empty($_REQUEST['month']) ? (int) $_REQUEST['month'] : date('n');
-$c['year'] = !empty($_REQUEST['year']) ? (int) $_REQUEST['year'] : date('Y');
+if (!empty($_REQUEST['month'])) {$c['month'] = (int) $_REQUEST['month'];}
+else if (!empty($month)) {$c['month'] = $month;} 
+else {$c['month'] = date('n');}
+
+if (!empty($_REQUEST['year'])) {$c['year'] = (int) $_REQUEST['year'];}
+else if (!empty($year)) {$c['year'] = $year;} 
+else {$c['year'] = date('Y');}
 
 $c['events'] = !empty($events) ? $events : ''; // Готовая json строка с массивом страниц для вывода событий
 
