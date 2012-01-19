@@ -86,6 +86,15 @@ if (!is_array($snippets)) {
     $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($snippets).' snippets.');
 }
 
+/* add chunks */
+$chunks = include $sources['data'].'transport.chunks.php';
+if (!is_array($chunks)) {
+    $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in chunkss.');
+} else {
+    $category->addMany($chunks);
+    $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($chunks).' chunks.');
+}
+
 /* create category vehicle */
 $attr = array(
     xPDOTransport::UNIQUE_KEY => 'category',
