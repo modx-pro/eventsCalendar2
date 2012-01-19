@@ -30,9 +30,9 @@ $snippets = array();
 $chunks[0]= $modx->newObject('modChunk');
 $chunks[0]->fromArray(array(
     'id' => 0,
-    'name' => 'tplEvents2',
+    'name' => 'tplEvent2',
     'description' => 'Template for Events.',
-    'chunk' => getSnippetContent($sources['source_core'].'/elements/chunks/tplEvent2.tpl'),
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/tplEvent2.tpl'),
 ),'',true,true);
 
 $chunks[1]= $modx->newObject('modChunk');
@@ -40,7 +40,7 @@ $chunks[1]->fromArray(array(
     'id' => 0,
     'name' => 'tplCalendar2',
     'description' => 'Template for Calendar.',
-    'chunk' => getSnippetContent($sources['source_core'].'/elements/chunks/tplCalendar2.tpl'),
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/tplCalendar2.tpl'),
 ),'',true,true);
 //$properties = include $sources['build'].'properties/properties.eventscalendar2.php';
 //$chunks[0]->setProperties($properties);
