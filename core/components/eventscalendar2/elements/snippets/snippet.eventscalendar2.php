@@ -16,6 +16,16 @@ else {$c['year'] = date('Y');}
 
 $c['events'] = !empty($events) ? $events : ''; // Готовая json строка с массивом страниц для вывода событий
 
+$c['includeContent'] = !empty($includeContent) ? true : false; // Включить ТВ параметры?
+$c['includeTVs'] = !empty($includeTVs) ? true : false; // Включить ТВ параметры?
+$c['includeTVList'] = !empty($includeTVList) ? explode(',', $includeTVList) : array(); // Список ТВ для выборки
+$c['processTVs'] = !empty($processTVs) ? true : false; // Отрендерить ТВ?
+$c['processTVList'] = !empty($processTVList) ? explode(',', $processTVList) : array(); // Отрендерить ТВ?
+
+$c['plPrefix'] = isset($plPrefix) ? $plPrefix : 'ec.'; // Префикс для плейсхолдеров
+$c['regCss'] = isset($regCss) ? $regCss : true; // Включить собственные стили?
+$c['regJs'] = isset($regJs) ? $regJs : true; // Включить собственные js скрипты?
+
 $c['dateSource'] = !empty($dateSource) ? $dateSource : 'createdon';
 $c['dateFormat'] = !empty($dateFormat) ? $dateFormat : '%d %b %Y %H:%M';
 
@@ -51,8 +61,12 @@ if (!($EC2 instanceof eventsCalendar2)) return '';
 
 //  Если идет запрос через ajax - останавливаем работу
 if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && $_REQUEST['action'] == 'refreshCalendar') {
-	echo $EC2->generateCalendar();
-	die;
+	$html = $EC2->generateCalendar();
+	// Парсим плейсхолдеры
+	$maxIterations= (integer) $modx->getOption('parser_max_iterations', null, 10);
+	$modx->getParser()->processElementTags('', $html, false, false, '[[', ']]', array(), $maxIterations);
+	$modx->getParser()->processElementTags('', $html, true, true, '[[', ']]', array(), $maxIterations);
+	die($html);
 }
 else {
 	echo $EC2->output();

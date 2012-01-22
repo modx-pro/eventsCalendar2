@@ -262,10 +262,25 @@ class eventsCalendar2 {
 		else {
 			$query->sortby($this->config['dateSource']);
 		}
+
+
+		// Извлекаем список ТВ, если он указан. Если не указан - извлечем позже
+		$templateVars = array();
+		if (!empty($this->config['includeTVs']) && !empty($this->config['includeTVList'])) {
+			$templateVars = $this->modx->getCollection('modTemplateVar', array('name:IN' => $this->config['includeTVList']));
+		}
+
 		
 		// Достаем данные из базы
+		// Извлекаем или нет поле content?
+		$fields = array_keys($this->modx->getFields('modResource'));
+		if (empty($this->config['includeContent'])) {
+			$fields = array_diff($fields, array('content'));
+		}
+		$columns = $this->config['includeContent'] ? $this->modx->getSelectColumns('modResource', 'modResource') : $this->modx->getSelectColumns('modResource', 'modResource', '', array('content'), true);
+		$query->select($columns);
+
 		$resources = $this->modx->getCollection('modResource', $query, false);
-		
 		foreach ($resources as $resource) {
 			if ($this->isTV) {
 				$tv = $this->modx->getObject('modTemplateVar', array('name' => $this->config['dateSource']));
@@ -281,9 +296,32 @@ class eventsCalendar2 {
 				$date = $resource->get($this->config['dateSource']);
 			}
 			
+			// Если ресурс подходит по дате - достаем (или нет) для него ТВ и сохраняем.
 			if (strftime('%Y-%n', strtotime($date) == "$year-$month")) {
-					$resource->set('date', $date);
-					$content[] = $resource->toArray();
+				$resource->set('date', $date);
+				
+				// Обработка ТВ, если нужно
+				$tvs = array();
+				if (!empty($this->config['includeTVs'])) {
+					// Если список нужных ТВ не был указан - извлекаем ВСЕ ТВ для ресурса
+					if (empty($this->config['includeTVList'])) {
+						$templateVars = $resource->getMany('TemplateVars');
+					}
+					// Обрабатываем ТВ
+					foreach ($templateVars as $tvId => $templateVar) {
+						if (!empty($this->config['includeTVList']) && !in_array($templateVar->get('name'), $this->config['includeTVList'])) {continue;}
+						// Рендерить ли ТВ?
+						// Да
+						if ($this->config['processTVs'] && (empty($this->config['processTVList']) || in_array($templateVar->get('name'), $this->config['processTVList']))) {
+							$tvs[$templateVar->get('name')] = $templateVar->renderOutput($resource->get('id'));
+						// Нет
+						} else {
+							$tvs[$templateVar->get('name')] = $templateVar->getValue($resource->get('id'));
+						}
+					}
+				}
+				
+				$content[] = array_merge($resource->toArray(), $tvs);
 			}
 		}
         return $content;
@@ -292,12 +330,10 @@ class eventsCalendar2 {
 	/* Оборачивание событий в чанк
 	 * */
 	function templateEvents($content) {
-        //  Для начала достаем указаный шаблон оформления каждого события
-        $tpl = $this->modx->getChunk($this->config['tplEvent']);
-        
+
         $i = 1;
         foreach ($content as $v) {
-            $placeholders = $values = array();
+            $pl = array();
             //  определяем переменные документа для подстановки в шаблон
 
             //  Это для номера события, если событие за день не одно
@@ -306,38 +342,36 @@ class eventsCalendar2 {
             $date2 = $date;
 
 			//	Обязательные плейсхолдеры: урл, номер события и дата
-			$placeholders[] = '[[+ec.url]]';
-            $values[] = $this->modx->makeUrl($v['id']);
 			if (!empty($v['id'])) {
-				$placeholders[] = '[[+ec.num]]';
-				$values[] = $i;
+				$pl[$this->config['plPrefix'].'url'] = $this->modx->makeUrl($v['id']);;
 			}
-            $placeholders[] = '[[+ec.date]]';
-            $values[] = strftime($this->config['dateFormat'], strtotime($v['date']));
+			$pl[$this->config['plPrefix'].'num'] = $i;
+            $pl[$this->config['plPrefix'].'date'] = strftime($this->config['dateFormat'], strtotime($v['date']));
+				unset($v['date']);
 
             foreach ($v as $k2 => $v2) {
-                $placeholders[] = '[[+ec.'.$k2.']]';
-                $values[] = $v2;
+                $pl[$this->config['plPrefix'].$k2] = $v2;
             }
-
-            $text = str_replace($placeholders, $values, $tpl);
-			$dates[$date2] .= $text;
-
+			$dates[$date2] .= $this->modx->getChunk($this->config['tplEvent'], $pl);
 			$i++;
         }
-		
-		$dates = preg_replace('/\[\[\+.*?\]\]/', '', $dates);	// Вылезаем пустые плейсхолдеры
+
+		//$dates = preg_replace('/\[\[\+.*?\]\]/', '', $dates);	// Вылезаем пустые плейсхолдеры
 		return $dates;
 	}
 
     /*  Обычная загрузка календаря при рендере страницы
 	 * */
     function output() {
-		$this->modx->regClientCSS('<link type="text/css" rel="stylesheet" href="'.$this->config['cssUrl'].'eventscalendar2.css"/>');
-		$this->modx->regClientStartupScript('<script type="text/javascript" src="'.$this->config['jsUrl'].'eventscalendar2.js"></script>');
+		if (!empty($this->config['regCss'])) {
+			$this->modx->regClientCSS('<link type="text/css" rel="stylesheet" href="'.$this->config['cssUrl'].'eventscalendar2.css"/>');
+		}
+		if (!empty($this->config['regJs'])) {
+			$this->modx->regClientStartupScript('<script type="text/javascript" src="'.$this->config['jsUrl'].'eventscalendar2.js"></script>');
+		}
 		
         $calendar = $this->generateCalendar();
-        return $this->modx->getChunk($this->config['tplMain'], array('ec.Calendar' => $calendar));
+        return $this->modx->getChunk($this->config['tplMain'], array($this->config['plPrefix'].'Calendar' => $calendar));
     }
 
 }

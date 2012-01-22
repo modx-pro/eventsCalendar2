@@ -1,13 +1,23 @@
 Changelog for eventsCalendar2.
 
-eventsCalendar2 2.2.0 rc2
+
+2.2.1 rc1 (22.01.2012)
+==============
+- New parameter &includeContent. Disabled by default. Use &includeContent=`1` for enable.
+- New parameters &includeTVs, &includeTVList, &processTVs, &processTVList add support for TVs. Works as in getResources.
+- New Parameter &plPrefix for all placeholders. It is `ec.` by default
+- New Parameter &regCss for built-in styles. Enabled by default.
+- New Parameter &regJs for built-in scripts. Enabled by default. Disable it for non-ajax navigation (&regJs=`0`).
+- Chunks /are now processed for input\output filters. You may use [[+longtitle:default=`no longtitle`]] for example.
+
+
+2.2.0 rc2 (19.01.2012)
 ==============
 - Added parameter events. Json string with events:
 Example: 
 [[!eventsCalendar?
     &events=`
-    [
-	{
+    [{
 	    "id": "1"
 	    ,"date": "2012-01-01 00:00:00"
 	    ,"pagetitle": "Test page"
@@ -16,8 +26,7 @@ Example:
 	    "id": "2"
 	    ,"date": "2012-01-02 12:05:00"
 	    ,"pagetitle": "Test page 2"
-	}
-    ]
+	}]
     `
 ]]
 
