@@ -1,6 +1,6 @@
 Changelog for eventsCalendar2.
 
-eventsCalendar2 2.2.0 rc1
+eventsCalendar2 2.2.0 rc2
 ==============
 - Added parameter events. Json string with events:
 Example: 

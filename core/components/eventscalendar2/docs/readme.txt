@@ -1,7 +1,7 @@
 --------------------
 eventsCalendar2
 --------------------
-Version: 2.2.0 rc1
+Version: 2.2.0
 Author: Vasiliy Naumkin <bezumkin@yandex.ru>
 --------------------
 
