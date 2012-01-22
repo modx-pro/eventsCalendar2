@@ -27,6 +27,7 @@
  */
 
 $properties = array(
+/*
     array(
         'name' => 'tpl',
         'desc' => 'prop_eventscalendar2.tpl_desc',
@@ -75,7 +76,6 @@ $properties = array(
         'value' => true,
         'lexicon' => 'eventscalendar2:properties',
     ),
-/*
     array(
         'name' => '',
         'desc' => 'prop_eventscalendar2.',

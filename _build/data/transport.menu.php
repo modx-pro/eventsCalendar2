@@ -54,3 +54,4 @@ unset($action);
 
 return $menu;
 */
+return '';
