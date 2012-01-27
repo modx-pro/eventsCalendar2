@@ -1,0 +1,56 @@
+#Calendar .calendar {
+	border-collapse: collapse;
+	font: normal 12px Arial;
+	width: 250px;
+	margin: auto;
+	border: 1px solid #555555;
+}
+#Calendar .date {border: 1px solid #AAA; padding: 3px; height: 20px;}
+#Calendar .date:hover {border: 1px solid #555555;}
+#Calendar .month {height: 30px; font-size: 1.2em;}
+
+#Calendar .month,
+#Calendar .dow,
+#Calendar .prev,
+#Calendar .next {text-align: center; font-weight: bold;}
+
+#Calendar .workday,
+#Calendar .weekend {text-align: right;}
+
+#Calendar .weekend {color: red;}
+#Calendar .emptyday {}
+#Calendar .today .date {background: #fffddf; border: 1px solid #ffdb58;}
+
+#Calendar .prev,
+#Calendar .next {cursor: pointer; border:none !important;}
+
+#Calendar .month {border: none !important;}
+#Calendar .prev:hover, .next:hover {text-decoration: underline;}
+
+#Calendar .noevent .date {background: #efefef;}
+#Calendar .isevent .date {color: #0047ab !important; font-weight: bold; cursor: pointer; background: #fbfbfb; }
+#Calendar .event {
+	color: black;
+	text-align: left;
+	position:absolute;
+	z-index: 10;
+	display: none;
+	background: #fff;
+	border: 1px solid #AAA;
+	padding: 5px;
+	min-height: 50px;
+	min-width: 200px;
+	max-height: 150px;      
+	max-width: 300px;
+	margin: -10px 0 0 10px;
+	overflow: auto;
+}
+
+#Calendar .cover {
+	opacity: 0.1;
+	position: relative;
+	background: #fff;
+	display: none;
+	margin: auto;
+	outline: 1px solid green;
+}

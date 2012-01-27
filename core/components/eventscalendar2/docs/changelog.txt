@@ -1,5 +1,14 @@
 Changelog for eventsCalendar2.
 
+2.2.2 rc1 (27.01.2012)
+==============
+- Added new chunks for processing snippet. Now you can further customize the table header and cell.
+- Added themes. We need to create the directory /assets/components/eventscalendar2/css/newthemename and call it in the parameter &theme=`newthemename`. Included theme for "twitter bootstrap". (&theme=`bootstrap`)
+- Added parameter &hideContainers, false by default
+- Added parameter &showHidden, true by default
+- Added german translation
+- Some perfomance optimizations
+- Improved detection of TV in &dateSource parametr. Prefix "tv" no longer needed but kept for compatibility.
 
 2.2.1 rc1 (22.01.2012)
 ==============

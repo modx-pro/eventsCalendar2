@@ -25,29 +25,29 @@
  * @package eventscalendar2
  * @subpackage lexicon
  */
-$_lang['day1'] = 'Su';
+$_lang['day1'] = 'So';
 $_lang['day2'] = 'Mo';
-$_lang['day3'] = 'Tu';
-$_lang['day4'] = 'We';
-$_lang['day5'] = 'Th';
+$_lang['day3'] = 'Di';
+$_lang['day4'] = 'Mi';
+$_lang['day5'] = 'Do';
 $_lang['day6'] = 'Fr';
 $_lang['day7'] = 'Sa';
 
-$_lang['month1'] = 'January';
-$_lang['month2'] = 'February';
-$_lang['month3'] = 'March';
+$_lang['month1'] = 'Januar';
+$_lang['month2'] = 'Februar';
+$_lang['month3'] = 'Marz';
 $_lang['month4'] = 'April';
-$_lang['month5'] = 'May';
-$_lang['month6'] = 'June';
-$_lang['month7'] = 'July';
+$_lang['month5'] = 'Mai';
+$_lang['month6'] = 'Juni';
+$_lang['month7'] = 'Juli';
 $_lang['month8'] = 'August';
 $_lang['month9'] = 'September';
-$_lang['month10'] = 'October';
+$_lang['month10'] = 'Oktober';
 $_lang['month11'] = 'November';
-$_lang['month12'] = 'December';
+$_lang['month12'] = 'Dezember';
 
-$_lang['no_id'] = 'You forgot to specify the resource id for the event selection';
-$_lang['no_action'] = 'Not specify a method for handling ajax request';
-$_lang['no_result'] = 'The specified resource has no events';
-$_lang['no_tv'] = 'The specified TV parameter does not exist';
-$_lang['err_decode_events'] = 'Error converting json string to an array of events';   
+$_lang['no_id'] = 'Sie haben vergessen, die ID der Ressource für die Veranstaltung Auswahl angeben.';
+$_lang['no_action'] = 'Unbekannte Methode für den Umgang mit Ajax-Request.';
+$_lang['no_result'] = 'Es gibt kein Dokument in dieser Ressource.';
+$_lang['no_tv'] = 'Die angegebenen TV gibt es nicht';
+$_lang['err_decode_events'] = 'Fehler beim Konvertieren von JSON-String in ein Array von Veranstaltungen';   

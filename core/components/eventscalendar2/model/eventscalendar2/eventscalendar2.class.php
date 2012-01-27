@@ -87,6 +87,38 @@ class eventsCalendar2 {
     }
 	
 	
+	/* Замеряет время выполнения функции
+	 * Вызывать в начале и конце скрипта
+	 *
+	 * */
+	function get_execution_time() {
+		static $microtime_start = null;
+		if($microtime_start === null)
+		{
+			$microtime_start = microtime(true);
+			return 0.0;
+		}
+		return microtime(true) - $microtime_start;
+	}
+	
+
+	/* Принимает массив элементов с ключами и выдает 2 массива - плейсхолдеры и значения
+	 * Можно использовать префиксы, вида 'lk'
+	 *
+	 * */
+	function makePlaceholders($arr, $prefix = '') {
+		if (!is_array($arr)) {return false;}
+		//if (!empty($prefix)) {$prefix .= '.';}
+
+		$res = array();
+		foreach ($arr as $k => $v) {
+			$res['pl'][$prefix.$k] = '[[+'.$prefix.$k.']]';
+			$res['vl'][$prefix.$k] = $v;
+		}
+		return $res;
+	}
+
+
 	/* Вывод ошибок
 	 * */
     function error($err) {
@@ -152,7 +184,8 @@ class eventsCalendar2 {
         
 		// Если указана json строка с массивом дат - пытаемся исмользовать ее
 		if (!empty($this->config['events'])) {
-			if (!$events = @json_decode($this->config['events'], true)) {
+			$events = @json_decode($this->config['events'], true);
+			if (!is_array($events)) {
 				$this->error('err_decode_events');
 			}
 		}
@@ -169,13 +202,22 @@ class eventsCalendar2 {
         $self = $this->modx->makeUrl($this->modx->resource->id);
 		
         $table = '<table class="'.$this->config['class_calendar'].'">';
-        $table .= '
-				<tr>
-					<td class="'.$this->config['class_prev'].'"><a href="'.$self.'?action=refreshCalendar&month='.$prev_month.'&year='.$prev_year.'">'.$this->config['btn_prev'].'</a></td>
-					<td class="'.$this->config['class_month'].'" colspan="5">'.$month_name.' '.$year.'</td>
-					<td class="'.$this->config['class_next'].'"><a href="'.$self.'?action=refreshCalendar&month='.$next_month.'&year='.$next_year.'">'.$this->config['btn_next'].'</a></td>
-				</tr>
-				<tr>';
+		
+		$tpl = $this->modx->getChunk($this->config['tplHead']);
+		$thead = array();
+		$thead['class_prev'] = $this->config['class_prev'];
+		$thead['class_month'] = $this->config['class_month'];
+		$thead['class_next'] = $this->config['class_next'];
+		$thead['link_prev'] = $self.'?action=refreshCalendar&month='.$prev_month.'&year='.$prev_year;
+		$thead['link_next'] = $self.'?action=refreshCalendar&month='.$next_month.'&year='.$next_year;
+		$thead['btn_prev'] = $this->config['btn_prev'];
+		$thead['btn_next'] = $this->config['btn_next'];
+		$thead['month_name'] = $month_name;
+		$thead['year'] = $year;
+		$pl = $this->makePlaceholders($thead, $this->config['plPrefix']);
+		$table .= str_replace($pl['pl'], $pl['vl'], $tpl);
+		
+        $table .= '<tr>';
 		// Обработка первого дня недели
 		if ($this->config['first_day'] == '0') {
 			 $table .= '<th class="'.$this->config['class_dow'].'">'.$this->modx->lexicon('day7').'</th>';
@@ -185,34 +227,43 @@ class eventsCalendar2 {
 		for ($i = 1; $i <= $wend; $i++) {
               $table .= '<th class="'.$this->config['class_dow'].'">'.$this->modx->lexicon('day'.$i).'</th>';
         }
+		
+		$today = !empty($_SESSION['calendar_date']) ? $_SESSION['calendar_date'] : strftime('%Y-%m-%d', time() + $this->config['time_shift']*60*60);
+		
+		$tpl =  $this->modx->getChunk($this->config['tplCell']);
 		foreach($week as $v) {
 			$table .= "</tr><tr>";
 			for($i = 0; $i < 7; $i++) {
 				if(!empty($v[$i])) {
 				   
-				   if (strlen($v[$i]) == 1) {$day = '0'.$v[$i];} else {$day = $v[$i];}
-				   $date = $year.'-'.sprintf('%02u',$month).'-'.$day;
-				   if ($i == 5 || $i == 6) {
+					if (strlen($v[$i]) == 1) {$day = '0'.$v[$i];} else {$day = $v[$i];}
+					$date = $year.'-'.sprintf('%02u',$month).'-'.$day;
+					if ($i == 5 || $i == 6) {
 					   $class = $this->config['class_weekend'];
-				   }
-				   else {
+					}
+					else {
 					   $class = $this->config['class_workday'];
-				   }
-				   if ($date == strftime('%Y-%m-%d', time() + $this->config['time_shift']*60*60)) {$class .= ' '.$this->config['class_today'];}
-				   if (!empty($events[$date])) {$class .= ' '.$this->config['class_isevent'];}
-				   else {$class .= ' '.$this->config['class_noevent'];}
-				   
-				   $table .= '<td class="'.$class.'" id="'.$this->config['calendar_id'].'_'.$v[$i].'">
-							   <div class="'.$this->config['class_date'].'">'.$v[$i].'</div>
-							   <div class="'.$this->config['class_event'].'">'.$events[$date].'</div>
-							  </td>
-							 ';
+					}
+
+					if ($date == $today) {$class .= ' '.$this->config['class_today'];}
+					if (!empty($events[$date])) {$class .= ' '.$this->config['class_isevent'];}
+					else {$class .= ' '.$this->config['class_noevent'];}
+
+					$trow = array();
+					$trow['class'] = $class;
+					$trow['cell_id'] = $this->config['calendar_id'].'_'.$v[$i];
+					$trow['day'] = $v[$i];
+					$trow['fulldate'] = "$year-$month-$v[$i]";
+					$trow['class_date'] = $this->config['class_date'];
+					$trow['class_event'] = $this->config['class_event'];
+					$trow['events'] = $events[$date];
+					$pl = $this->makePlaceholders($trow, $this->config['plPrefix']);
+					$table .= str_replace($pl['pl'], $pl['vl'], $tpl);
 			   }
 			   else $table .= '<td class="'.$this->config['class_emptyday'].'">&nbsp;</td>';
 			}
 		} 
 		$table .= '</table>';
-          
 		return $table;
 	}
     
@@ -248,8 +299,16 @@ class eventsCalendar2 {
 			$query->where(array(
 				'published' => true,
 				'deleted' => false,
-				'id:IN' => $tmp,
+				'id:IN' => $tmp
 			));
+			// Не показывать скрытые в меню
+			if (empty($this->config['showHidden'])) {
+				$query->andCondition(array('hidemenu' => 0));
+			}
+			// Не показывать контейнеры
+			if (!empty($this->config['hideContainers'])) {
+				$query->andCondition(array('isfolder' => 0));
+			}
 		}
 		else {$this->error('no_result');} // У документа нет потомков - это ошибка
 		
@@ -258,9 +317,16 @@ class eventsCalendar2 {
 			$this->isTV = 1;
 			$this->config['dateSource'] = preg_replace('/^tv/i', '', $this->config['dateSource']);
 		}
-		// Если не TV - значит поле контента
 		else {
-			$query->sortby($this->config['dateSource']);
+			// Улучшенная проверка на TV параметр
+			$tmp = $this->modx->newObject('modResource')->toArray();
+			if (!array_key_exists($this->config['dateSource'], $tmp)) {
+				$this->isTV = 1;
+			}
+			// Если не TV - значит поле контента
+			else {
+				$query->sortby($this->config['dateSource']);
+			}
 		}
 
 
@@ -360,11 +426,18 @@ class eventsCalendar2 {
 		return $dates;
 	}
 
+	
     /*  Обычная загрузка календаря при рендере страницы
 	 * */
     function output() {
 		if (!empty($this->config['regCss'])) {
-			$this->modx->regClientCSS('<link type="text/css" rel="stylesheet" href="'.$this->config['cssUrl'].'eventscalendar2.css"/>');
+			if (!empty($this->config['theme'])) {
+				$this->modx->regClientCSS('<link type="text/css" rel="stylesheet" href="'.$this->config['cssUrl'].$this->config['theme'].'/theme.css"/>');
+			}
+			else {
+				$this->modx->regClientCSS('<link type="text/css" rel="stylesheet" href="'.$this->config['cssUrl'].'default.css"/>');
+			}
+			
 		}
 		if (!empty($this->config['regJs'])) {
 			$this->modx->regClientStartupScript('<script type="text/javascript" src="'.$this->config['jsUrl'].'eventscalendar2.js"></script>');

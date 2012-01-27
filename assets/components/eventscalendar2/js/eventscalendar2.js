@@ -1,25 +1,20 @@
 $(document).ready(function() {
 
-	// Внешний вид календаря при загрузке
-	$('#Calendar .calendar').ajaxStart(function() {
-		$(this).css('opacity', 0.3);
-		var width = $(this).css('width');
-		var height = $(this).css('height');
-		
-		$(this).parent().find('.cover').css({'width': width, 'height': height, 'margin-top': '-' + height}).show();
-	})
-
-	$('#Calendar .calendar').ajaxStop(function() {
-		$(this).css('opacity', 1)
-		$(this).parent().find('.cover').hide();
-	})
-	////
-
 	// Смена месяца
-	$('#Calendar .prev a, #Calendar .next a').live('click', function() {
+	$(document).on('click', '#Calendar .prev a, #Calendar .next a', function() {
+		var cal = $(this).parentsUntil('.calendar').parent();
 		var href = $(this).attr('href');
+		
+		$(cal).css('opacity', 0.7);
+
+		var width = $(cal).css('width');
+		var height = $(cal).css('height');
+		
+		$(cal).parent().find('.cover').css({'width': width, 'height': height, 'margin-top': '-' + height}).show();
+		
 		$.get(href, function(data) {
-				$('#Calendar').html(data);
+				$(cal).parent().find('.cover').hide();
+				$('#Calendar .calendar').replaceWith(data);
 			}
 		)
 		return false;    

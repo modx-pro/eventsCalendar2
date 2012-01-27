@@ -42,6 +42,24 @@ $chunks[1]->fromArray(array(
     'description' => 'Template for Calendar.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/tplCalendar2.tpl'),
 ),'',true,true);
+
+$chunks[2]= $modx->newObject('modChunk');
+$chunks[2]->fromArray(array(
+    'id' => 0,
+    'name' => 'tplHead2',
+    'description' => 'Header for calendars table.',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/tplHead2.tpl'),
+),'',true,true);
+
+$chunks[3]= $modx->newObject('modChunk');
+$chunks[3]->fromArray(array(
+    'id' => 0,
+    'name' => 'tplCell2',
+    'description' => 'Chunk for table cell.',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/tplCell2.tpl'),
+),'',true,true);
+
+
 //$properties = include $sources['build'].'properties/properties.eventscalendar2.php';
 //$chunks[0]->setProperties($properties);
 //unset($properties);

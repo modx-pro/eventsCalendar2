@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The base eventsCalendar2 snippet.
  *
@@ -15,12 +16,13 @@ else if (!empty($year)) {$c['year'] = $year;}
 else {$c['year'] = date('Y');}
 
 $c['events'] = !empty($events) ? $events : ''; // Готовая json строка с массивом страниц для вывода событий
+$c['theme'] = !empty($theme) ? $theme : ''; // Тема оформления календаря
 
 $c['includeContent'] = !empty($includeContent) ? true : false; // Включить ТВ параметры?
 $c['includeTVs'] = !empty($includeTVs) ? true : false; // Включить ТВ параметры?
 $c['includeTVList'] = !empty($includeTVList) ? explode(',', $includeTVList) : array(); // Список ТВ для выборки
 $c['processTVs'] = !empty($processTVs) ? true : false; // Отрендерить ТВ?
-$c['processTVList'] = !empty($processTVList) ? explode(',', $processTVList) : array(); // Отрендерить ТВ?
+$c['processTVList'] = !empty($processTVList) ? explode(',', $processTVList) : array(); // Список ТВ для рендера?
 
 $c['plPrefix'] = isset($plPrefix) ? $plPrefix : 'ec.'; // Префикс для плейсхолдеров
 $c['regCss'] = isset($regCss) ? $regCss : true; // Включить собственные стили?
@@ -28,9 +30,13 @@ $c['regJs'] = isset($regJs) ? $regJs : true; // Включить собстве�
 
 $c['dateSource'] = !empty($dateSource) ? $dateSource : 'createdon';
 $c['dateFormat'] = !empty($dateFormat) ? $dateFormat : '%d %b %Y %H:%M';
+$c['hideContainers'] = isset($hideContainers) ? $hideContainers : false;
+$c['showHidden'] = isset($showHidden) ? $showHidden : true;
 
-$c['tplEvent'] = !empty($tplEvent) ? $tplEvent : 'tplEvent2';
+$c['tplHead'] = !empty($tplHead) ? $tplHead : 'tplHead2';
 $c['tplMain'] = !empty($tplMain) ? $tplMain : 'tplCalendar2';
+$c['tplCell'] = !empty($tplCell) ? $tplCell : 'tplCell2';
+$c['tplEvent'] = !empty($tplEvent) ? $tplEvent : 'tplEvent2';
 
 $c['calendar_id'] = !empty($calendar_id) ? $calendar_id : 'calendar_id';
 
