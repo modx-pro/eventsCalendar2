@@ -1,49 +1,173 @@
 #Calendar .calendar {
-	border-collapse: collapse;
-	font: normal 12px Arial;
-	width: 250px;
+	background: #FFFFFF;
+	font: normal 12px Tahoma;
+	width: 240px;
 	margin: auto;
+	border-spacing: 4 !important;
+	border: 1px solid #999999;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	border-radius: 4px !important;
+}
+#Calendar .date {
+	border: 1px solid #AAA; 
+	padding: 3px; 
+	width: 24px; 
+	height: 24px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	text-shadow: 0px 1px 1px #FFFFFF;
+	filter: dropshadow(color=#FFFFFF, offx=0, offy=1); 
+}
+#Calendar .date:hover {
 	border: 1px solid #555555;
 }
-#Calendar .date {border: 1px solid #AAA; padding: 3px; height: 20px;}
-#Calendar .date:hover {border: 1px solid #555555;}
-#Calendar .month {height: 30px; font-size: 1.2em;}
-
+#Calendar .noevent .date:hover {
+	background: #efefef; /* Old browsers */
+	background: -moz-linear-gradient(top,  #efefef 0%, #dedede 50%, #cecece 51%, #ededed 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(50%,#dedede), color-stop(51%,#cecece), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* IE10+ */
+	background: linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* W3C */
+}
+#Calendar .head {
+	background: #efefef; /* Old browsers */
+	background: -moz-linear-gradient(top,  #efefef 0%, #dedede 50%, #cecece 51%, #ededed 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(50%,#dedede), color-stop(51%,#cecece), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* IE10+ */
+	background: linear-gradient(top,  #efefef 0%,#dedede 50%,#cecece 51%,#ededed 100%); /* W3C */
+	border: 1px solid #999999;
+}
+#Calendar .month {
+	height: 30px; 
+	font-size: 1.2em;
+}
 #Calendar .month,
-#Calendar .dow,
-#Calendar .prev,
-#Calendar .next {text-align: center; font-weight: bold;}
-
+#Calendar .dow {
+	text-align: center; 
+	font-weight: bold;
+}
+#Calendar .dow {
+	font-size: 0.8em;
+	padding: 10px;
+}
 #Calendar .workday,
-#Calendar .weekend {text-align: right;}
+#Calendar .weekend {
+	text-align: right;
+}
 
-#Calendar .weekend {color: red;}
+#Calendar .weekend {
+	color: #990000;
+	font-weight: bold;
+}
 #Calendar .emptyday {}
-#Calendar .today .date {background: #fffddf; border: 1px solid #ffdb58;}
-
+#Calendar .today .date {
+	background: #e4f5fc; /* Old browsers */
+	background: -moz-linear-gradient(top,  #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e4f5fc), color-stop(50%,#bfe8f9), color-stop(51%,#9fd8ef), color-stop(100%,#2ab0ed)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%); /* IE10+ */
+	background: linear-gradient(top,  #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4f5fc', endColorstr='#2ab0ed',GradientType=0 ); /* IE6-8 */
+	border: 1px solid #09C;
+}
+#Calendar .month,
 #Calendar .prev,
-#Calendar .next {cursor: pointer; border:none !important;}
+#Calendar .next {
+	font-weight: bold;
+	cursor: pointer; 
+	text-shadow: 0px 1px 1px #FFFFFF;
+	filter: dropshadow(color=#FFFFFF, offx=0, offy=1);
+}
 
-#Calendar .month {border: none !important;}
-#Calendar .prev:hover, .next:hover {text-decoration: underline;}
+#Calendar .month {
+	border: none !important;
+}
+#Calendar .prev {
+	float: left;
+	padding: 5px;
+}
+#Calendar .next {
+	float: right;
+	padding: 5px;
+}
 
-#Calendar .noevent .date {background: #efefef;}
-#Calendar .isevent .date {color: #0047ab !important; font-weight: bold; cursor: pointer; background: #fbfbfb; }
+#Calendar .prev a, .next a {
+	padding: 3px 6px;
+	text-decoration: none;
+}
+#Calendar .prev a:hover, .next a:hover {
+	text-decoration: none;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border: 1px solid #AAA;
+	padding: 2px 5px;
+}
+
+#Calendar .noevent .date {	
+	background: #fefefe; /* Old browsers */
+	background: -moz-linear-gradient(top,  #fefefe 0%, #eeeeee 50%, #e5e5e5 51%, #efefef 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(50%,#eeeeee), color-stop(51%,#e5e5e5), color-stop(100%,#efefef)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #fefefe 0%,#eeeeee 50%,#e5e5e5 51%,#efefef 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #fefefe 0%,#eeeeee 50%,#e5e5e5 51%,#efefef 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #fefefe 0%,#eeeeee 50%,#e5e5e5 51%,#efefef 100%); /* IE10+ */
+	background: linear-gradient(top,  #fefefe 0%,#eeeeee 50%,#e5e5e5 51%,#efefef 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#efefef',GradientType=0 ); /* IE6-8 */
+}
+#Calendar .isevent .date {
+	color: #060 !important; 
+	font-weight: bold; 
+	cursor: pointer; 
+	background: #e6f0a3; /* Old browsers */
+	background: -moz-linear-gradient(top,  #e6f0a3 0%, #d2e638 50%, #c3d825 51%, #dbf043 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e6f0a3), color-stop(50%,#d2e638), color-stop(51%,#c3d825), color-stop(100%,#dbf043)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #e6f0a3 0%,#d2e638 50%,#c3d825 51%,#dbf043 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #e6f0a3 0%,#d2e638 50%,#c3d825 51%,#dbf043 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #e6f0a3 0%,#d2e638 50%,#c3d825 51%,#dbf043 100%); /* IE10+ */
+	background: linear-gradient(top,  #e6f0a3 0%,#d2e638 50%,#c3d825 51%,#dbf043 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6f0a3', endColorstr='#dbf043',GradientType=0 ); /* IE6-8 */
+ }
 #Calendar .event {
-	color: black;
 	text-align: left;
 	position:absolute;
 	z-index: 10;
 	display: none;
-	background: #fff;
-	border: 1px solid #AAA;
-	padding: 5px;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+	background: linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-8 */
+	border: 10px solid rgba(120, 120, 120, 50);
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	padding: 10px;
 	min-height: 50px;
 	min-width: 200px;
 	max-height: 150px;      
 	max-width: 300px;
 	margin: -10px 0 0 10px;
 	overflow: auto;
+}
+#Calendar .event div {
+	text-align: left;
+	font-weight: normal;
+}
+#Calendar .event div .num {
+	font-weight: bold;
+	color: #333;
+}
+#Calendar .event div .eventdate {
+	color: #333; 
 }
 
 #Calendar .cover {

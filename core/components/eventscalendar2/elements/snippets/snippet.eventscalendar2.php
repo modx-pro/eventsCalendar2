@@ -8,11 +8,11 @@
 $c['id'] = !empty($id) ? $id : $modx->resourceIdentifier;
 
 if (!empty($_REQUEST['month'])) {$c['month'] = (int) $_REQUEST['month'];}
-else if (!empty($month)) {$c['month'] = $month;} 
+else if (!empty($month)) {$c['month'] = (int) $month;} 
 else {$c['month'] = date('n');}
 
 if (!empty($_REQUEST['year'])) {$c['year'] = (int) $_REQUEST['year'];}
-else if (!empty($year)) {$c['year'] = $year;} 
+else if (!empty($year)) {$c['year'] = (int) $year;} 
 else {$c['year'] = date('Y');}
 
 $c['events'] = !empty($events) ? $events : ''; // Готовая json строка с массивом страниц для вывода событий
