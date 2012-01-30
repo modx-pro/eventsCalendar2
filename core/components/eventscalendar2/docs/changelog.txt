@@ -1,5 +1,11 @@
 Changelog for eventsCalendar2.
 
+2.2.2 rc2 (30.01.2012)
+=============
+- Bugfixes for TV support
+- New css3 default theme from Pavel Galankin (dark100rm@yandex.ru)
+
+
 2.2.2 rc1 (27.01.2012)
 ==============
 - Added new chunks for processing snippet. Now you can further customize the table header and cell.

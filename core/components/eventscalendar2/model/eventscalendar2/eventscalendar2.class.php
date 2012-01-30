@@ -361,9 +361,9 @@ class eventsCalendar2 {
 			else {
 				$date = $resource->get($this->config['dateSource']);
 			}
-			
+
 			// Если ресурс подходит по дате - достаем (или нет) для него ТВ и сохраняем.
-			if (strftime('%Y-%n', strtotime($date) == "$year-$month")) {
+			if (date('Y-n', strtotime($date)) == "$year-$month") {
 				$resource->set('date', $date);
 				
 				// Обработка ТВ, если нужно
