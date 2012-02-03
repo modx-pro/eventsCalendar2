@@ -238,7 +238,7 @@ class eventsCalendar2 {
 				   
 					if (strlen($v[$i]) == 1) {$day = '0'.$v[$i];} else {$day = $v[$i];}
 					$date = $year.'-'.sprintf('%02u',$month).'-'.$day;
-					if ($i == 5 || $i == 6) {
+					if (($wend == 7 && ($i == 5 || $i == 6)) || ($wend == 6 && ($i == 0 || $i == 6))) {
 					   $class = $this->config['class_weekend'];
 					}
 					else {
