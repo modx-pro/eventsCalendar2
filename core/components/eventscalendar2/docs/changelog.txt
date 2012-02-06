@@ -1,6 +1,6 @@
 Changelog for eventsCalendar2.
 
-2.2.2 rc2 (06.02.2012)
+2.2.2 rc3 (06.02.2012)
 =============
 - Bugfixes english and german lixicon
 - Fixed &first_day=`0` parameter for US week.
