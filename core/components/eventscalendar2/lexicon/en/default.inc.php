@@ -25,13 +25,13 @@
  * @package eventscalendar2
  * @subpackage lexicon
  */
-$_lang['day1'] = 'Su';
-$_lang['day2'] = 'Mo';
-$_lang['day3'] = 'Tu';
-$_lang['day4'] = 'We';
-$_lang['day5'] = 'Th';
-$_lang['day6'] = 'Fr';
-$_lang['day7'] = 'Sa';
+$_lang['day1'] = 'Mo';
+$_lang['day2'] = 'Tu';
+$_lang['day3'] = 'We';
+$_lang['day4'] = 'Th';
+$_lang['day5'] = 'Fr';
+$_lang['day6'] = 'Sa';
+$_lang['day7'] = 'Su';
 
 $_lang['month1'] = 'January';
 $_lang['month2'] = 'February';
