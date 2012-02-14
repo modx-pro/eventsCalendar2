@@ -276,7 +276,7 @@ class eventsCalendar2 {
 
 		// Узнаем ID потомков указанного контейнера. Если указаны родители - выбираем по ним
 		if ($this->config['parents']) {
-			$parents = explode(',', $this->parents.',');
+			$parents = explode(',', $this->config['parents']);
 			foreach ($parents as $v) {
 				$v = trim($v);
 				if (!empty($v)) {$tmp0[] = $this->modx->getChildIds($v);}
