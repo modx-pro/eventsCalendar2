@@ -1,5 +1,10 @@
 Changelog for eventsCalendar2.
 
+2.2.2 pl (17.02.2012)
+=============
+- [#3] Fixed multiple parents bug.
+
+
 2.2.2 rc3 (06.02.2012)
 =============
 - Bugfixes english and german lixicon

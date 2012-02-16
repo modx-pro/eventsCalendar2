@@ -275,25 +275,19 @@ class eventsCalendar2 {
         if (empty($year)) {$year = date('Y');}
 
 		// Узнаем ID потомков указанного контейнера. Если указаны родители - выбираем по ним
+		$tmp = array();
 		if ($this->config['parents']) {
 			$parents = explode(',', $this->config['parents']);
 			foreach ($parents as $v) {
 				$v = trim($v);
-				if (!empty($v)) {$tmp0[] = $this->modx->getChildIds($v);}
-			}
-			if (empty($tmp0)) {$this->error('no_result');}
-			else {
-				foreach($tmp0 as $v) {
-					foreach ($v as $k2 => $v2) {
-						$tmp[$k2] = $v2;
-					}
-				}
+				if (!empty($v)) {$tmp = array_merge($tmp, $this->modx->getChildIds($v));}
 			}
 		}
 		// Если родители не указаны - выбираем по ID
 		else {
 			$tmp = $this->modx->getChildIds($id);
 		}
+		
 		$query = $this->modx->newQuery('modResource');
 		if (count($tmp) > 0) {
 			$query->where(array(
