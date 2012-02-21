@@ -191,10 +191,10 @@ class eventsCalendar2 {
 			// Сортируем по дате полученные из json события
 			else {
 				function compare_date($a, $b) {
-        				if ($a['date'] == $b['date']) {return 0};
-        				return (strtotime($a['date']) < strtotime($b[$key])) ? -1 : 1;
+        				if ($a['date'] == $b['date']) {return 0;}
+        				return (strtotime($a['date']) < strtotime($b['date'])) ? -1 : 1;
         			}
-        			uasort($content,"compare_date");
+        			uasort($events,"compare_date");
 			}
 		}
 		// Если нет - штатно получаем события
