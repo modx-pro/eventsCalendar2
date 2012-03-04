@@ -1,5 +1,15 @@
 Changelog for eventsCalendar2.
 
+2.2.3 pl (04.03.2012)
+=============
+- Fixed bug with incorrect numbering of the events when they are received out of order.
+- [#7] Fixed verification of data for templating events
+- [#8] Fixed missing tr tag in calendar table
+- Added placeholders month_next && month_prev for tplHead2. You may now displaying month names in prev-next links.
+- Added placeholder day_total for tplCell2 - total count of events in the day.
+- All chunks are now fully parsed for placeholders, filters etc.
+
+
 2.2.2 pl (17.02.2012)
 =============
 - [#3] Fixed multiple parents bug.

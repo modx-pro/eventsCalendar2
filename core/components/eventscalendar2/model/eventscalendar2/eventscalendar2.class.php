@@ -195,28 +195,31 @@ class eventsCalendar2 {
 		}
 		
 		// Украшаем полученные события
-		$events = $this->templateEvents($events);
+		$tmp = $this->templateEvents($events);
+		$events = $tmp['events'];
+		$total = $tmp['total'];
+		//echo'<pre>';print_r($tmp);die;
 		
 		// Рисуем календарь
 		$month_name = $this->modx->lexicon('month'.$month);
-        $self = $this->modx->makeUrl($this->modx->resource->id);
-		
-        $table = '<table class="'.$this->config['class_calendar'].'">';
-		
-		$tpl = $this->modx->getChunk($this->config['tplHead']);
+		$self = $this->modx->makeUrl($this->modx->resource->id);
+
+		$table = '<table class="'.$this->config['class_calendar'].'">';
 		$thead = array();
 		$thead['class_prev'] = $this->config['class_prev'];
 		$thead['class_month'] = $this->config['class_month'];
 		$thead['class_next'] = $this->config['class_next'];
 		$thead['link_prev'] = $self.'?action=refreshCalendar&month='.$prev_month.'&year='.$prev_year;
 		$thead['link_next'] = $self.'?action=refreshCalendar&month='.$next_month.'&year='.$next_year;
+		$thead['month_prev'] = $this->modx->lexicon('month'.$prev_month);
+		$thead['month_next'] = $this->modx->lexicon('month'.$next_month);
 		$thead['btn_prev'] = $this->config['btn_prev'];
 		$thead['btn_next'] = $this->config['btn_next'];
 		$thead['month_name'] = $month_name;
 		$thead['year'] = $year;
 		$pl = $this->makePlaceholders($thead, $this->config['plPrefix']);
-		$table .= str_replace($pl['pl'], $pl['vl'], $tpl);
-		
+		$table .= $this->modx->getChunk($this->config['tplHead'], $pl['vl']);
+
         $table .= '<tr>';
 		// Обработка первого дня недели
 		if ($this->config['first_day'] == '0') {
@@ -229,8 +232,7 @@ class eventsCalendar2 {
         }
 		
 		$today = !empty($_SESSION['calendar_date']) ? $_SESSION['calendar_date'] : strftime('%Y-%m-%d', time() + $this->config['time_shift']*60*60);
-		
-		$tpl =  $this->modx->getChunk($this->config['tplCell']);
+
 		foreach($week as $v) {
 			$table .= "</tr><tr>";
 			for($i = 0; $i < 7; $i++) {
@@ -256,17 +258,24 @@ class eventsCalendar2 {
 					$trow['fulldate'] = "$year-$month-$v[$i]";
 					$trow['class_date'] = $this->config['class_date'];
 					$trow['class_event'] = $this->config['class_event'];
-					$trow['events'] = $events[$date];
+					if (isset($total[$date])) {
+						$trow['events'] = $events[$date];
+						$trow['day_total'] = $total[$date];
+					}
+					else {
+						$trow['events'] = '';
+						$trow['day_total'] = 0;
+					}
 					$pl = $this->makePlaceholders($trow, $this->config['plPrefix']);
-					$table .= str_replace($pl['pl'], $pl['vl'], $tpl);
-			   }
-			   else $table .= '<td class="'.$this->config['class_emptyday'].'">&nbsp;</td>';
+					$table .= $this->modx->getChunk($this->config['tplCell'], $pl['vl']);
+				}
+				else {$table .= '<td class="'.$this->config['class_emptyday'].'">&nbsp;</td>';}
 			}
 		} 
-		$table .= '</table>';
+		$table .= '</tr></table>';
 		return $table;
 	}
-    
+
 	/* Получение событий из БД, принимает месяц и год
 	 * */
     function getEvents($month = '', $year = '') {
@@ -389,41 +398,37 @@ class eventsCalendar2 {
 	
 	/* Оборачивание событий в чанк
 	 * */
-	function templateEvents($content) {
-
-        $i = 1;
-        foreach ($content as $v) {
-            $pl = array();
-            //  определяем переменные документа для подстановки в шаблон
-
-            //  Это для номера события, если событие за день не одно
-            $date = strftime('%Y-%m-%d', strtotime($v['date']));
-            if (isset($date2) && $date2 != $date) {$i = 1;}
-            $date2 = $date;
+	function templateEvents($content = array()) {
+		$events = $total = array();
+		if (empty($content) || !is_array($content)) {$content = array();}
+		//  определяем переменные документа для подстановки в шаблон
+		foreach ($content as $v) {
+			$pl = array();
+			$date = strftime('%Y-%m-%d', strtotime($v['date']));
+			if (!isset($total[$date])) {$total[$date] = 0;}
 
 			//	Обязательные плейсхолдеры: урл, номер события и дата
 			if (!empty($v['id'])) {
 				$pl[$this->config['plPrefix'].'url'] = $this->modx->makeUrl($v['id']);;
 			}
-			$pl[$this->config['plPrefix'].'num'] = $i;
-            $pl[$this->config['plPrefix'].'date'] = strftime($this->config['dateFormat'], strtotime($v['date']));
+			$pl[$this->config['plPrefix'].'num'] = $total[$date] + 1;
+			$pl[$this->config['plPrefix'].'date'] = strftime($this->config['dateFormat'], strtotime($v['date']));
 				unset($v['date']);
 
-            foreach ($v as $k2 => $v2) {
-                $pl[$this->config['plPrefix'].$k2] = $v2;
-            }
-			$dates[$date2] .= $this->modx->getChunk($this->config['tplEvent'], $pl);
-			$i++;
-        }
-
-		//$dates = preg_replace('/\[\[\+.*?\]\]/', '', $dates);	// Вылезаем пустые плейсхолдеры
-		return $dates;
+			foreach ($v as $k2 => $v2) {
+				$pl[$this->config['plPrefix'].$k2] = $v2;
+			}
+			$events[$date] .= $this->modx->getChunk($this->config['tplEvent'], $pl);
+			$total[$date] += 1;
+		}
+		//$events = preg_replace('/\[\[\+.*?\]\]/', '', $events);	// Вылезаем пустые плейсхолдеры
+		return array('events' => $events, 'total' => $total);
 	}
 
 	
-    /*  Обычная загрузка календаря при рендере страницы
+	/*  Обычная загрузка календаря при рендере страницы
 	 * */
-    function output() {
+	function output() {
 		if (!empty($this->config['regCss'])) {
 			if (!empty($this->config['theme'])) {
 				$this->modx->regClientCSS('<link type="text/css" rel="stylesheet" href="'.$this->config['cssUrl'].$this->config['theme'].'/theme.css"/>');
@@ -437,8 +442,8 @@ class eventsCalendar2 {
 			$this->modx->regClientStartupScript('<script type="text/javascript" src="'.$this->config['jsUrl'].'eventscalendar2.js"></script>');
 		}
 		
-        $calendar = $this->generateCalendar();
-        return $this->modx->getChunk($this->config['tplMain'], array($this->config['plPrefix'].'Calendar' => $calendar));
-    }
-
+		$calendar = $this->generateCalendar();
+		return $this->modx->getChunk($this->config['tplMain'], array($this->config['plPrefix'].'Calendar' => $calendar));
+	}
+	
 }
