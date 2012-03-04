@@ -264,7 +264,7 @@ class eventsCalendar2 {
 					}
 					else {
 						$trow['events'] = '';
-						$trow['day_total'] = 0;
+						$trow['day_total'] = '';
 					}
 					$pl = $this->makePlaceholders($trow, $this->config['plPrefix']);
 					$table .= $this->modx->getChunk($this->config['tplCell'], $pl['vl']);
