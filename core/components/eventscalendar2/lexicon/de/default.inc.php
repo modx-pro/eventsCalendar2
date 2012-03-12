@@ -20,7 +20,7 @@
  * @package eventscalendar2
  */
 /**
- * Default English Lexicon Entries for eventsCalendar2
+ * Default German Lexicon Entries for eventsCalendar2
  *
  * @package eventscalendar2
  * @subpackage lexicon
@@ -36,7 +36,7 @@ $_lang['day7'] = 'So';
 
 $_lang['month1'] = 'Januar';
 $_lang['month2'] = 'Februar';
-$_lang['month3'] = 'Marz';
+$_lang['month3'] = 'März';
 $_lang['month4'] = 'April';
 $_lang['month5'] = 'Mai';
 $_lang['month6'] = 'Juni';
