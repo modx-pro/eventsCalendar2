@@ -1,5 +1,10 @@
 Changelog for eventsCalendar2.
 
+2.2.4 pl (05.06.2013)
+=============
+- Fixed javascript. Now working with jQuery 1.9+
+
+
 2.2.3 pl (04.03.2012)
 =============
 - Fixed bug with incorrect numbering of the events when they are received out of order.
