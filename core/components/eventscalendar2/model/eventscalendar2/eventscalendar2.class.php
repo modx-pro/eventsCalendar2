@@ -313,7 +313,10 @@ class eventsCalendar2 {
 				$query->andCondition(array('isfolder' => 0));
 			}
 		}
-		else {$this->error('no_result');} // У документа нет потомков - это ошибка
+		else {
+			$this->error('no_result'); // У документа нет потомков - это ошибка
+			return array();
+			}
 		
 		// Если источником события задан TV параметр - работаем по нему
 		if (preg_match('/^tv/i', $this->config['dateSource'])) {
