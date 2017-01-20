@@ -188,6 +188,14 @@ class eventsCalendar2 {
 			if (!is_array($events)) {
 				$this->error('err_decode_events');
 			}
+			// Сортируем по дате полученные из json события
+			else {
+				function compare_date($a, $b) {
+        				if ($a['date'] == $b['date']) {return 0;}
+        				return (strtotime($a['date']) < strtotime($b['date'])) ? -1 : 1;
+        			}
+        			uasort($events,"compare_date");
+			}
 		}
 		// Если нет - штатно получаем события
 		else {
